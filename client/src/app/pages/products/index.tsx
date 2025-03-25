@@ -55,6 +55,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useTRPC } from '@/api'
+import { useQuery } from '@tanstack/react-query'
 
 // Dados de exemplo para produtos
 const produtos = [
@@ -74,6 +76,9 @@ const produtos = [
 ]
 
 export function ProdutosPage() {
+  const trpc = useTRPC()
+  const { data, isLoading } = useQuery(trpc.hello.queryOptions({name:'teste nome'}))
+  
   const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   const toggleItem = (id: string) => {
@@ -151,6 +156,13 @@ export function ProdutosPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Gerencie seu catálogo de produtos e estoque
           </p>
+
+          <p>
+      Loading: {isLoading?'true':'false'}
+      </p>
+      <p>
+      {data?.greeting}
+      </p>
         </div>
         <div className="flex items-center gap-2">
           <TooltipProvider>
