@@ -21,6 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+	"types": ["../worker-configuration.d.ts", "../server/src/types/hono.d.ts"],
 
     /* ShadCN */
     "baseUrl": ".",

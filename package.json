@@ -4,6 +4,8 @@
 	"workspaces": ["client", "server"],
 	"scripts": {
 		"dev": "wrangler dev",
+		"b": "bun run build",
+		"build": "cd client && bun run build",
 		"deploy": "wrangler deploy --minify",
 		"types": "wrangler types --env-interface CloudflareBindings"
 	},
