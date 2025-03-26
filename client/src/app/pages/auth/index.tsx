@@ -25,13 +25,13 @@ export const AuthPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="bg-background flex min-h-screen">
       {/* Left side - decorative */}
-      <div className="hidden w-1/2 bg-gradient-to-br from-primary/90 to-primary/40 lg:block">
+      <div className="from-primary/90 to-primary/40 hidden w-1/2 bg-gradient-to-br lg:block">
         <div className="flex h-full flex-col items-center justify-center px-8">
           <div className="relative">
-            <div className="absolute -left-16 -top-16 h-32 w-32 rounded-full bg-primary/20"></div>
-            <div className="absolute -right-16 -bottom-16 h-32 w-32 rounded-full bg-primary/20"></div>
+            <div className="bg-primary/20 absolute -top-16 -left-16 h-32 w-32 rounded-full"></div>
+            <div className="bg-primary/20 absolute -right-16 -bottom-16 h-32 w-32 rounded-full"></div>
             <div className="relative z-10 flex items-center gap-3 rounded-xl bg-white/10 p-4 backdrop-blur-sm">
               <Package className="h-10 w-10 text-white" />
               <Building2 className="h-10 w-10 text-white" />
@@ -66,10 +66,10 @@ export const AuthPage = () => {
 
       {/* Right side - login form */}
       <div className="flex w-full items-center justify-center p-4 lg:w-1/2">
-        <Card className="mx-auto w-full max-w-md border-none bg-background shadow-none">
+        <Card className="bg-background mx-auto w-full max-w-md border-none shadow-none">
           <CardHeader className="space-y-2">
             <div className="flex lg:hidden">
-              <div className="flex items-center gap-2 rounded-lg bg-primary p-2 text-primary-foreground">
+              <div className="bg-primary text-primary-foreground flex items-center gap-2 rounded-lg p-2">
                 <Package className="h-5 w-5" />
                 <Building2 className="h-5 w-5" />
               </div>
@@ -91,7 +91,7 @@ export const AuthPage = () => {
                   id="email"
                   type="email"
                   placeholder="nome@empresa.com"
-                  className="h-11 rounded-md border-muted-foreground/20 transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+                  className="border-muted-foreground/20 focus:border-primary focus:ring-primary h-11 rounded-md transition-all focus:ring-1"
                   required
                 />
               </div>
@@ -102,7 +102,7 @@ export const AuthPage = () => {
                   </Label>
                   <Link
                     to="/forgot-password"
-                    className="text-xs text-primary transition-colors hover:text-primary/80"
+                    className="text-primary hover:text-primary/80 text-xs transition-colors"
                   >
                     Esqueceu a senha?
                   </Link>
@@ -110,7 +110,7 @@ export const AuthPage = () => {
                 <Input
                   id="password"
                   type="password"
-                  className="h-11 rounded-md border-muted-foreground/20 transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+                  className="border-muted-foreground/20 focus:border-primary focus:ring-primary h-11 rounded-md transition-all focus:ring-1"
                   required
                 />
               </div>
