@@ -1,45 +1,16 @@
-import { initTRPC } from '@trpc/server';
-import { z } from 'zod';
+import { productProcedures } from '@server/trpc/product'
+import { userProcedures } from '@server/trpc/user'
+import { initTRPC, TRPCBuilder } from '@trpc/server'
 
-/**
- * Initialization of tRPC backend
- * Should be done only once per backend!
- */
-const t = initTRPC.create();
+const t = (initTRPC as TRPCBuilder<HonoContext, object>).create()
 
-/**
- * Export reusable router and procedure helpers
- * that can be used throughout the router
- */
-export const router = t.router;
-export const publicProcedure = t.procedure;
+export const router = t.router
 
+export const publicProcedure = t.procedure
+// TODO
+export const privateProcedure = publicProcedure
 
 export const trpcRouter = router({
-  hello: publicProcedure
-  .input(
-    z.object({
-      name: z.string(),
-  }),
-  )
-  .query((opts) => {
-    const name = opts.input.name;
-
-    return {
-      greeting: `Hello ${name}`,
-    };
-  }),
-  helloMutation: publicProcedure
-  .input(
-    z.object({
-      name: z.string(),
-    }),
-  )
-  .mutation((opts) => {
-    const name = opts.input.name;
-
-    return {
-      greeting: `Hello mut ${name}`,
-    };
-  }),
-});
+  userProcedures,
+  productProcedures,
+})

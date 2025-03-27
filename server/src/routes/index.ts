@@ -1,29 +1,31 @@
-import { Hono } from "hono";
+import { Hono } from 'hono'
 
-import { Trpc } from "./trpc";
-import { Pages } from "./pages";
+import { withHeaders } from '../middlewares/withHeaders'
+import { withVariables } from '../middlewares/withVariables'
+import { Pages } from './pages'
+import { Trpc } from './trpc'
 
-
-export const RoutesHandler = (req: Request, env: CloudflareBindings, ctx: ExecutionContext)=>{
-  const r = new Hono<HonoVariables>();
+export const RoutesHandler = (
+  req: Request,
+  env: CloudflareBindings,
+  ctx: ExecutionContext,
+) => {
+  const r = new Hono<HonoVariables>()
 
   //
   // Middlewares
 
-  r.use((_ctx, next) => {
-    //
-    return next()
-  })
+  r.use(withVariables, withHeaders)
 
   //
   //
 
   //
   // API
-  
+
   Trpc(r)
-  
-  r.all('/api/*', ctx=>{
+
+  r.all('/api/*', (ctx) => {
     return ctx.notFound()
   })
   //
@@ -31,7 +33,5 @@ export const RoutesHandler = (req: Request, env: CloudflareBindings, ctx: Execut
 
   Pages(r)
 
-  
-
   return r.fetch(req, env, ctx)
-} 
+}

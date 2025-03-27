@@ -1,15 +1,14 @@
-import { createTRPCClient, httpBatchLink } from '@trpc/client';
-import { QueryClient } from '@tanstack/react-query';
-import { createTRPCContext } from '@trpc/tanstack-react-query';
+import { QueryClient } from '@tanstack/react-query'
+import { createTRPCClient, httpBatchLink } from '@trpc/client'
+import { createTRPCContext } from '@trpc/tanstack-react-query'
 
-import type { TrpcRouter } from '../../../server/src';
+import type { TrpcRouter } from '../../../server/src'
 
+export { QueryClientProvider } from '@tanstack/react-query'
 
-export  { QueryClientProvider } from '@tanstack/react-query';
+export const { TRPCProvider, useTRPC } = createTRPCContext<TrpcRouter>()
 
-export const { TRPCProvider, useTRPC,  } = createTRPCContext<TrpcRouter>();
-
-export const queryClient  = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // With SSR, we usually want to set some default staleTime
@@ -17,7 +16,7 @@ export const queryClient  = new QueryClient({
       staleTime: 60 * 1000,
     },
   },
-});
+})
 
 // Pass AppRouter as generic here. 👇 This lets the `trpc` object know
 // what procedures are available on the server and their input/output types.
@@ -27,8 +26,4 @@ export const trpcClient = createTRPCClient<TrpcRouter>({
       url: 'http://localhost:8787/api/trpc',
     }),
   ],
-});
-
-
-
-
+})
