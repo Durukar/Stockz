@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import {
   ArrowUpDown,
   ChevronDown,
@@ -14,6 +15,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 
+import { useTRPC } from '@/api'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -55,8 +57,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useTRPC } from '@/api'
-import { useQuery } from '@tanstack/react-query'
 
 // Dados de exemplo para produtos
 const produtos = [
@@ -77,8 +77,8 @@ const produtos = [
 
 export function ProdutosPage() {
   const trpc = useTRPC()
-  const { data, isLoading } = useQuery(trpc.hello.queryOptions({name:'teste nome'}))
-  
+  const { data, isLoading } = useQuery(trpc.userProcedures.queryOptions())
+
   const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   const toggleItem = (id: string) => {
@@ -157,12 +157,8 @@ export function ProdutosPage() {
             Gerencie seu catálogo de produtos e estoque
           </p>
 
-          <p>
-      Loading: {isLoading?'true':'false'}
-      </p>
-      <p>
-      {data?.greeting}
-      </p>
+          <p>Loading: {isLoading ? 'true' : 'false'}</p>
+          <p>{data}</p>
         </div>
         <div className="flex items-center gap-2">
           <TooltipProvider>
