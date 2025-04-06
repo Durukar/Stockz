@@ -135,3 +135,5 @@ export const AuthPage = () => {
     </div>
   )
 }
+
+export default AuthPage
