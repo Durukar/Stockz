@@ -1,7 +1,20 @@
 {
 	"name": "server",
+	"scripts": {
+		"generate": "bun drizzle-kit generate",
+		"migrate": "bun drizzle-kit migrate"
+	},
 	"dependencies": {
+		"@graphql-tools/schema": "10.0.23",
+		"@graphql-tools/merge": "9.0.24",
+		"@graphql-tools/mock": "9.0.22",
+		"drizzle-orm": "0.41.0",
 		"hono": "4.7.5",
-		"zod": "3.24.2"
+		"graphql-tag": "2.12.6",
+		"graphql-yoga": "5.13.3",
+		"ulid": "3.0.0"
+	},
+	"devDependencies": {
+		"drizzle-kit": "0.30.5"
 	}
 }

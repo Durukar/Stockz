@@ -1,5 +1,5 @@
-import { FC } from 'react'
-
+import { useMutation } from '@/api/mutation'
+import { useQuery } from '@/api/query'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,10 +8,33 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
 
-export const ProductPage: FC = () => {
+import {
+  mutation$,
+  product$,
+  query$,
+} from '../../../../../types/graphql/fetchers'
+
+const productFetcher = product$.id.title
+// const productEdgeFetcher = productEdge$.node(productFetcher)
+// const productConn = productConnection$.edges(productEdgeFetcher)
+// const qry = query$.products(productFetcher)
+const qry = query$.product(productFetcher)
+
+const mut = mutation$.productCreate(productFetcher)
+
+export const ProductPage = () => {
+  const { data: newProd, mutate } = useMutation(mut)
+
+  const { data, loading } = useQuery(qry, {
+    variables: {
+      id: newProd?.productCreate?.id,
+    },
+  })
+
   return (
     <SidebarInset>
       <header className="group-has[[data-collapsible=icon]]/sidebar-wrapper:h-12 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
@@ -30,6 +53,12 @@ export const ProductPage: FC = () => {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
+        <p>Loading: {loading ? 'true' : 'false'}</p>
+        <p>{data?.product?.id}</p>
+        <p>{data?.product?.title}</p>
+        <Button onClick={() => mutate({ content: { title: 'teste' } })}>
+          create
+        </Button>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
