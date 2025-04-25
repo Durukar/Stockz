@@ -3,13 +3,21 @@ main = "server/src/index.ts"
 compatibility_date = "2025-03-21"
 placement = { "mode" = "smart" }
 
+kv_namespaces = [
+  { binding = "KV", id = "TODO" }
+]
+
 [assets]
 binding = "ASSETS"
 directory = "./client/dist"
 not_found_handling = "single-page-application"
 
-# Observer
+[[d1_databases]]
+binding = "D1"
+database_name = "stockz_db"
+database_id = "YOUR DB ID"
+migrations_dir = "server/drizzle"
+
 [build]
-command = "pnpm build"
-cwd = "client"
-watch_dir = "client/src"
+command = "bun run build"
+watch_dir = ["./client/src","./server/src"]
