@@ -56,28 +56,6 @@ export interface ProductFetcher<T extends object, TVariables extends object> ext
     readonly "~id": ProductFetcher<Omit<T, 'id'>, TVariables>;
 
 
-    readonly title: ProductFetcher<T & {readonly "title": string}, TVariables>;
-
-    "title+"<
-        XAlias extends string = "title", 
-        XDirectives extends { readonly [key: string]: DirectiveArgs } = {}, 
-        XDirectiveVariables extends object = {}
-    >(
-        optionsConfigurer: (
-            options: FieldOptions<"title", {}, {}>
-        ) => FieldOptions<XAlias, XDirectives, XDirectiveVariables>
-    ): ProductFetcher<
-        T & (
-            XDirectives extends { readonly include: any } | { readonly skip: any } ? 
-                {readonly [key in XAlias]?: string} : 
-                {readonly [key in XAlias]: string}
-        ), 
-        TVariables & XDirectiveVariables
-    >;
-
-    readonly "~title": ProductFetcher<Omit<T, 'title'>, TVariables>;
-
-
     readonly url: ProductFetcher<T & {readonly "url"?: string}, TVariables>;
 
     "url+"<
@@ -93,6 +71,116 @@ export interface ProductFetcher<T extends object, TVariables extends object> ext
     >;
 
     readonly "~url": ProductFetcher<Omit<T, 'url'>, TVariables>;
+
+
+    readonly name: ProductFetcher<T & {readonly "name": string}, TVariables>;
+
+    "name+"<
+        XAlias extends string = "name", 
+        XDirectives extends { readonly [key: string]: DirectiveArgs } = {}, 
+        XDirectiveVariables extends object = {}
+    >(
+        optionsConfigurer: (
+            options: FieldOptions<"name", {}, {}>
+        ) => FieldOptions<XAlias, XDirectives, XDirectiveVariables>
+    ): ProductFetcher<
+        T & (
+            XDirectives extends { readonly include: any } | { readonly skip: any } ? 
+                {readonly [key in XAlias]?: string} : 
+                {readonly [key in XAlias]: string}
+        ), 
+        TVariables & XDirectiveVariables
+    >;
+
+    readonly "~name": ProductFetcher<Omit<T, 'name'>, TVariables>;
+
+
+    readonly quantity: ProductFetcher<T & {readonly "quantity": number}, TVariables>;
+
+    "quantity+"<
+        XAlias extends string = "quantity", 
+        XDirectives extends { readonly [key: string]: DirectiveArgs } = {}, 
+        XDirectiveVariables extends object = {}
+    >(
+        optionsConfigurer: (
+            options: FieldOptions<"quantity", {}, {}>
+        ) => FieldOptions<XAlias, XDirectives, XDirectiveVariables>
+    ): ProductFetcher<
+        T & (
+            XDirectives extends { readonly include: any } | { readonly skip: any } ? 
+                {readonly [key in XAlias]?: number} : 
+                {readonly [key in XAlias]: number}
+        ), 
+        TVariables & XDirectiveVariables
+    >;
+
+    readonly "~quantity": ProductFetcher<Omit<T, 'quantity'>, TVariables>;
+
+
+    readonly price: ProductFetcher<T & {readonly "price": number}, TVariables>;
+
+    "price+"<
+        XAlias extends string = "price", 
+        XDirectives extends { readonly [key: string]: DirectiveArgs } = {}, 
+        XDirectiveVariables extends object = {}
+    >(
+        optionsConfigurer: (
+            options: FieldOptions<"price", {}, {}>
+        ) => FieldOptions<XAlias, XDirectives, XDirectiveVariables>
+    ): ProductFetcher<
+        T & (
+            XDirectives extends { readonly include: any } | { readonly skip: any } ? 
+                {readonly [key in XAlias]?: number} : 
+                {readonly [key in XAlias]: number}
+        ), 
+        TVariables & XDirectiveVariables
+    >;
+
+    readonly "~price": ProductFetcher<Omit<T, 'price'>, TVariables>;
+
+
+    readonly type: ProductFetcher<T & {readonly "type": string}, TVariables>;
+
+    "type+"<
+        XAlias extends string = "type", 
+        XDirectives extends { readonly [key: string]: DirectiveArgs } = {}, 
+        XDirectiveVariables extends object = {}
+    >(
+        optionsConfigurer: (
+            options: FieldOptions<"type", {}, {}>
+        ) => FieldOptions<XAlias, XDirectives, XDirectiveVariables>
+    ): ProductFetcher<
+        T & (
+            XDirectives extends { readonly include: any } | { readonly skip: any } ? 
+                {readonly [key in XAlias]?: string} : 
+                {readonly [key in XAlias]: string}
+        ), 
+        TVariables & XDirectiveVariables
+    >;
+
+    readonly "~type": ProductFetcher<Omit<T, 'type'>, TVariables>;
+
+
+    readonly status: ProductFetcher<T & {readonly "status": string}, TVariables>;
+
+    "status+"<
+        XAlias extends string = "status", 
+        XDirectives extends { readonly [key: string]: DirectiveArgs } = {}, 
+        XDirectiveVariables extends object = {}
+    >(
+        optionsConfigurer: (
+            options: FieldOptions<"status", {}, {}>
+        ) => FieldOptions<XAlias, XDirectives, XDirectiveVariables>
+    ): ProductFetcher<
+        T & (
+            XDirectives extends { readonly include: any } | { readonly skip: any } ? 
+                {readonly [key in XAlias]?: string} : 
+                {readonly [key in XAlias]: string}
+        ), 
+        TVariables & XDirectiveVariables
+    >;
+
+    readonly "~status": ProductFetcher<Omit<T, 'status'>, TVariables>;
 }
 
 export const product$: ProductFetcher<{}, {}> = 
@@ -102,12 +190,16 @@ export const product$: ProductFetcher<{}, {}> =
             "OBJECT", 
             [node$.fetchableType], 
             [
-                "title", 
                 {
                     category: "SCALAR", 
                     name: "url", 
                     undefinable: true
-                }
+                }, 
+                "name", 
+                "quantity", 
+                "price", 
+                "type", 
+                "status"
             ]
         ), 
         ENUM_INPUT_METADATA, 
@@ -118,6 +210,10 @@ export const product$: ProductFetcher<{}, {}> =
 export const product$$ = 
     product$
         .id
-        .title
         .url
+        .name
+        .quantity
+        .price
+        .type
+        .status
 ;

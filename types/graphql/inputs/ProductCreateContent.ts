@@ -3,5 +3,5 @@
  * do not satisfy the constraint 'SerializableParam' of recoil
  */
 export type ProductCreateContent = {
-    readonly title: string;
+    readonly name: string;
 }

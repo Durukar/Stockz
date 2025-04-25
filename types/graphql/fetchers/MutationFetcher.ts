@@ -232,7 +232,10 @@ export const mutation$: MutationFetcher<{}, {}> =
                 {
                     category: "REFERENCE", 
                     name: "productUpdate", 
-                    argGraphQLTypeMap: {content: 'ProductUpdateContent!'}, 
+                    argGraphQLTypeMap: {
+                        id: 'ID!', 
+                        content: 'ProductUpdateContent!'
+                    }, 
                     targetTypeName: "Product", 
                     undefinable: true
                 }, 
@@ -257,6 +260,7 @@ export interface MutationArgs {
     }, 
 
     readonly productUpdate: {
+        readonly id: string, 
         readonly content: ProductUpdateContent
     }, 
 

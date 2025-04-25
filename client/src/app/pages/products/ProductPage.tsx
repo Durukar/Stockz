@@ -1,8 +1,8 @@
-'use client'
-
 import { Filter, Pen, Plus, Search, Trash, X } from 'lucide-react'
-import { type FC, useEffect, useState } from 'react'
+import { type FC, useCallback, useState } from 'react'
 
+import { useMutation } from '@/api/mutation'
+import { useQuery } from '@/api/query'
 import { Status } from '@/components/status'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -38,65 +38,25 @@ import {
 } from '@/components/ui/table'
 import { useTitle } from '@/hooks/useTitle'
 
-interface Product {
-  id: string
-  name: string
-  type: string
-  status: string
-  quantity: number
-  price: number
-}
+import {
+  mutation$,
+  product$,
+  productConnection$,
+  productEdge$,
+  query$,
+} from '../../../../../types/graphql/fetchers'
 
-const products: Product[] = [
-  {
-    id: 'prod-001',
-    name: 'D50',
-    type: 'Camera',
-    status: 'Em estoque',
-    quantity: 32,
-    price: 4500.0,
-  },
-  {
-    id: 'prod-002',
-    name: 'Tripé Profissional',
-    type: 'Acessório',
-    status: 'Em estoque',
-    quantity: 15,
-    price: 850.0,
-  },
-  {
-    id: 'prod-003',
-    name: 'Lente 50mm',
-    type: 'Lente',
-    status: 'Baixo estoque',
-    quantity: 5,
-    price: 1200.0,
-  },
-  {
-    id: 'prod-004',
-    name: 'Flash Externo',
-    type: 'Acessório',
-    status: 'Em estoque',
-    quantity: 20,
-    price: 750.0,
-  },
-  {
-    id: 'prod-005',
-    name: 'Câmera DSLR Pro',
-    type: 'Camera',
-    status: 'Esgotado',
-    quantity: 0,
-    price: 6800.0,
-  },
-  {
-    id: 'prod-006',
-    name: 'Kit Iluminação',
-    type: 'Equipamento',
-    status: 'Em estoque',
-    quantity: 8,
-    price: 3200.0,
-  },
-]
+const productFetcher = product$.id.name.type.status.quantity.price
+const productUpdateFetcher = product$.id.name.price
+
+const edgeFetcher = productEdge$.node(productFetcher)
+const connFetcher = productConnection$.edges(edgeFetcher)
+
+const qry = query$.products(connFetcher)
+
+const mut = mutation$.productUpdate(productUpdateFetcher)
+
+type Product = gqlType<typeof productFetcher>
 
 export const ProductPage: FC = () => {
   useTitle('StockZ | Produtos')
@@ -104,36 +64,46 @@ export const ProductPage: FC = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
   const [open, setOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
+  const { mutate: productUpdate } = useMutation(mut)
+
+  const { data } = useQuery(qry, {
+    // variables:{
+    //   ///
+    // }
+  })
+
+  const products = data?.products?.edges || []
+  const filteredProducts = products
+
   // Extract unique categories and statuses for filters
   const categories = Array.from(
-    new Set(products.map((product) => product.type)),
+    new Set(products.map((product) => product.node.type)),
   )
   const statuses = Array.from(
-    new Set(products.map((product) => product.status)),
+    new Set(products.map((product) => product.node.status)),
   )
 
   // Apply filters when search term or selected filters change
-  useEffect(() => {
-    const filtered = products.filter((product) => {
-      const matchesSearch = product.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-      const matchesCategory =
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(product.type)
-      const matchesStatus =
-        selectedStatuses.length === 0 ||
-        selectedStatuses.includes(product.status)
+  // useEffect(() => {
+  //   const filtered = products.filter((product) => {
+  //     const matchesSearch = product.node.name
+  //       .toLowerCase()
+  //       .includes(searchTerm.toLowerCase())
+  //     const matchesCategory =
+  //       selectedCategories.length === 0 ||
+  //       selectedCategories.includes(product.node.type)
+  //     const matchesStatus =
+  //       selectedStatuses.length === 0 ||
+  //       selectedStatuses.includes(product.node.status)
 
-      return matchesSearch && matchesCategory && matchesStatus
-    })
+  //     return matchesSearch && matchesCategory && matchesStatus
+  //   })
 
-    setFilteredProducts(filtered)
-  }, [searchTerm, selectedCategories, selectedStatuses])
+  //   setFilteredProducts(filtered)
+  // }, [searchTerm, selectedCategories, selectedStatuses])
 
   // Toggle category selection
   const toggleCategory = (category: string) => {
@@ -165,6 +135,20 @@ export const ProductPage: FC = () => {
     setSelectedProduct(product)
     setOpen(true)
   }
+
+  const onEdit = useCallback(
+    (id: string) => () => {
+      console.log('Edit', id)
+      productUpdate({
+        id,
+        content: {
+          name: '1234',
+          price: 100000,
+        },
+      })
+    },
+    [productUpdate],
+  )
 
   return (
     <SidebarInset>
@@ -280,7 +264,7 @@ export const ProductPage: FC = () => {
                 </TableHeader>
                 <TableBody>
                   {filteredProducts.length > 0 ? (
-                    filteredProducts.map((product) => (
+                    filteredProducts.map(({ node: product }) => (
                       <>
                         <TableRow key={product.id}>
                           <TableCell>
@@ -313,7 +297,11 @@ export const ProductPage: FC = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Button variant="outline" size="sm">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={onEdit(product.id)}
+                            >
                               <Pen className="mr-2 h-3 w-3" />
                               <span>editar</span>
                             </Button>
