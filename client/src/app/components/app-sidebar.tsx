@@ -25,7 +25,6 @@ const data = {
   navMain: [
     {
       title: 'Produtos',
-      url: '#',
       icon: Package,
       isActive: true,
       items: [

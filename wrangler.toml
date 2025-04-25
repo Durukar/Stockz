@@ -7,3 +7,9 @@ placement = { "mode" = "smart" }
 binding = "ASSETS"
 directory = "./client/dist"
 not_found_handling = "single-page-application"
+
+# Observer
+[build]
+command = "pnpm build"
+cwd = "client"
+watch_dir = "client/src"
